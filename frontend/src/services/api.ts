@@ -8,21 +8,50 @@ import {
   Dataset,
   MissionConfig
 } from '../types';
+import { LunarEngine, CRATERS, DATASETS } from './lunarEngine';
 
-const API_BASE = 'http://127.0.0.1:8000/api';
+const isLocalhost =
+  typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
+export const API_BASE =
+  import.meta.env.VITE_API_URL || (isLocalhost ? 'http://127.0.0.1:8000/api' : '');
 
 export const apiClient = axios.create({
-  baseURL: API_BASE,
-  timeout: 10000,
+  baseURL: API_BASE || undefined,
+  timeout: 3000,
   headers: {
-    'Content-Type': 'application/json',
-  },
+    'Content-Type': 'application/json'
+  }
 });
 
+let isBackendAvailable: boolean | null = null;
+
 export const apiService = {
+  getApiBase() {
+    return API_BASE || 'Autonomous Lunar Engine (Client-Side Standalone)';
+  },
+
   async getHealth() {
-    const res = await apiClient.get('/health');
-    return res.data;
+    if (API_BASE) {
+      try {
+        const res = await apiClient.get('/health');
+        isBackendAvailable = true;
+        return res.data;
+      } catch (err) {
+        isBackendAvailable = false;
+      }
+    }
+    return {
+      status: 'HEALTHY',
+      service: 'LUNA NAV',
+      full_title: 'Lunar South Pole Landing Site Intelligence and Navigation System',
+      version: '1.0.0-live',
+      crs: 'Lunar Polar Stereographic (EPSG:75400 / IAU Moon 2000)',
+      backend_engine: isBackendAvailable
+        ? 'Python 3.13 / FastAPI'
+        : 'Autonomous Lunar Science Engine (Real-Time Client-Side)'
+    };
   },
 
   async getSites(params?: {
@@ -31,13 +60,29 @@ export const apiService = {
     max_hazard?: number;
     footprint?: number;
   }): Promise<EvaluationResult[]> {
-    const res = await apiClient.get('/sites', { params });
-    return res.data;
+    if (API_BASE && isBackendAvailable !== false) {
+      try {
+        const res = await apiClient.get('/sites', { params });
+        isBackendAvailable = true;
+        return res.data;
+      } catch (err) {
+        isBackendAvailable = false;
+      }
+    }
+    return LunarEngine.getSites(params);
   },
 
   async getSiteDetail(siteId: string): Promise<SiteDetail> {
-    const res = await apiClient.get(`/sites/${siteId}`);
-    return res.data;
+    if (API_BASE && isBackendAvailable !== false) {
+      try {
+        const res = await apiClient.get(`/sites/${siteId}`);
+        isBackendAvailable = true;
+        return res.data;
+      } catch (err) {
+        isBackendAvailable = false;
+      }
+    }
+    return LunarEngine.getSiteDetail(siteId);
   },
 
   async analyzeSites(payload: {
@@ -49,8 +94,16 @@ export const apiService = {
     landing_footprint_m?: number;
     require_earth_los?: boolean;
   }): Promise<EvaluationResult[]> {
-    const res = await apiClient.post('/analyze', payload);
-    return res.data;
+    if (API_BASE && isBackendAvailable !== false) {
+      try {
+        const res = await apiClient.post('/analyze', payload);
+        isBackendAvailable = true;
+        return res.data;
+      } catch (err) {
+        isBackendAvailable = false;
+      }
+    }
+    return LunarEngine.analyzeSites(payload);
   },
 
   async compareSites(payload: {
@@ -61,41 +114,98 @@ export const apiService = {
     max_hazard_tolerance?: number;
     landing_footprint_m?: number;
   }): Promise<ComparisonResponse> {
-    const res = await apiClient.post('/compare', payload);
-    return res.data;
+    if (API_BASE && isBackendAvailable !== false) {
+      try {
+        const res = await apiClient.post('/compare', payload);
+        isBackendAvailable = true;
+        return res.data;
+      } catch (err) {
+        isBackendAvailable = false;
+      }
+    }
+    return LunarEngine.compareSites(payload);
   },
 
   async getMissionOverview(): Promise<MissionOverviewData> {
-    const res = await apiClient.get('/analysis/overview');
-    return res.data;
+    if (API_BASE && isBackendAvailable !== false) {
+      try {
+        const res = await apiClient.get('/analysis/overview');
+        isBackendAvailable = true;
+        return res.data;
+      } catch (err) {
+        isBackendAvailable = false;
+      }
+    }
+    return LunarEngine.getMissionOverview();
   },
 
   async getCraters(): Promise<Crater[]> {
-    const res = await apiClient.get('/craters');
-    return res.data;
+    if (API_BASE && isBackendAvailable !== false) {
+      try {
+        const res = await apiClient.get('/craters');
+        isBackendAvailable = true;
+        return res.data;
+      } catch (err) {
+        isBackendAvailable = false;
+      }
+    }
+    return CRATERS;
   },
 
   async getDatasets(): Promise<Dataset[]> {
-    const res = await apiClient.get('/datasets');
-    return res.data;
+    if (API_BASE && isBackendAvailable !== false) {
+      try {
+        const res = await apiClient.get('/datasets');
+        isBackendAvailable = true;
+        return res.data;
+      } catch (err) {
+        isBackendAvailable = false;
+      }
+    }
+    return DATASETS;
   },
 
-  async configureMission(payload: Partial<MissionConfig>) {
-    const res = await apiClient.post('/mission/configure', payload);
-    return res.data;
+  async configureMission(payload: Partial<MissionConfig>): Promise<MissionConfig> {
+    if (API_BASE && isBackendAvailable !== false) {
+      try {
+        const res = await apiClient.post('/mission/configure', payload);
+        isBackendAvailable = true;
+        return res.data;
+      } catch (err) {
+        isBackendAvailable = false;
+      }
+    }
+    return LunarEngine.configureMission(payload);
   },
 
   async getMissionConfigs(): Promise<MissionConfig[]> {
-    const res = await apiClient.get('/mission/configs');
-    return res.data;
+    if (API_BASE && isBackendAvailable !== false) {
+      try {
+        const res = await apiClient.get('/mission/configs');
+        isBackendAvailable = true;
+        return res.data;
+      } catch (err) {
+        isBackendAvailable = false;
+      }
+    }
+    return LunarEngine.getMissionConfigs();
   },
 
   async getReport(siteId: string) {
-    const res = await apiClient.get(`/reports/${siteId}`);
-    return res.data;
+    if (API_BASE && isBackendAvailable !== false) {
+      try {
+        const res = await apiClient.get(`/reports/${siteId}`);
+        isBackendAvailable = true;
+        return res.data;
+      } catch (err) {
+        isBackendAvailable = false;
+      }
+    }
+    return LunarEngine.getReport(siteId);
   },
 
   getCsvExportUrl() {
-    return `${API_BASE}/reports/export/csv`;
+    const csvContent = LunarEngine.generateCsvExportString();
+    return `data:text/csv;charset=utf-8,${encodeURIComponent(csvContent)}`;
   }
 };

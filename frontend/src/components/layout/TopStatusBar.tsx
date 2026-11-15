@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Activity, Database, Satellite, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
-import { apiService } from '../../services/api';
+import { Activity, Database, Satellite, Clock, Cpu } from 'lucide-react';
+import { apiService, API_BASE } from '../../services/api';
 
 export const TopStatusBar: React.FC = () => {
   const [utcTime, setUtcTime] = useState<string>('');
   const [backendOnline, setBackendOnline] = useState<boolean>(true);
   const [latencyMs, setLatencyMs] = useState<number>(12);
+  const isStandalone = !API_BASE;
 
   useEffect(() => {
     const updateTime = () => {
@@ -80,10 +81,19 @@ export const TopStatusBar: React.FC = () => {
 
         {/* Backend Heartbeat */}
         <div className="flex items-center space-x-1.5 pl-2 border-l border-space-700">
-          <div className={`w-2 h-2 rounded-full ${backendOnline ? 'bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]' : 'bg-red-500'}`} />
-          <span className={`text-[11px] ${backendOnline ? 'text-space-300' : 'text-red-400 font-bold'}`}>
-            {backendOnline ? `FASTAPI ${latencyMs}ms` : 'OFFLINE'}
-          </span>
+          {isStandalone ? (
+            <>
+              <Cpu className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="text-[11px] text-cyan-300 font-mono">AUTONOMOUS ENGINE</span>
+            </>
+          ) : (
+            <>
+              <div className={`w-2 h-2 rounded-full ${backendOnline ? 'bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]' : 'bg-red-500'}`} />
+              <span className={`text-[11px] ${backendOnline ? 'text-space-300' : 'text-red-400 font-bold'}`}>
+                {backendOnline ? `FASTAPI ${latencyMs}ms` : 'OFFLINE'}
+              </span>
+            </>
+          )}
         </div>
       </div>
     </header>

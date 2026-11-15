@@ -204,7 +204,7 @@ export const SettingsPage: React.FC = () => {
           </div>
           <div>
             <span className="text-space-500 text-[10px] block uppercase">API BASE</span>
-            <span className="text-cyan-300 font-telemetry text-[10px]">http://127.0.0.1:8000/api</span>
+            <span className="text-cyan-300 font-telemetry text-[10px]">{import.meta.env.VITE_API_URL || 'Autonomous Client-Side Engine'}</span>
           </div>
         </div>
 

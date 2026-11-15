@@ -50,11 +50,20 @@ export const MissionPlannerPage: React.FC = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      setStatusMsg('PERSISTING TO SQLITE & EVALUATING SITES...');
+      setStatusMsg('PERSISTING MISSION CONFIGURATION & EVALUATING SITES...');
       const res = await apiService.configureMission(formData);
-      setEvaluations(res.evaluations);
-      setPassingCount(res.passing_sites_count);
-      setStatusMsg(`MISSION CONFIGURED: ${res.passing_sites_count} of ${res.evaluations_count} sites compliant.`);
+      // Run analysis with new config
+      const evals = await apiService.analyzeSites({
+        max_slope_deg: (res as MissionConfig).max_acceptable_slope,
+        min_illumination_pct: (res as MissionConfig).min_illumination_req,
+        max_hazard_tolerance: (res as MissionConfig).max_hazard_tolerance,
+        landing_footprint_m: (res as MissionConfig).footprint_diameter_m,
+        require_earth_los: (res as MissionConfig).require_earth_los,
+      });
+      const passing = evals.filter((e: EvaluationResult) => !e.exclusion.is_excluded).length;
+      setEvaluations(evals);
+      setPassingCount(passing);
+      setStatusMsg(`MISSION CONFIGURED: ${passing} of ${evals.length} sites compliant.`);
       fetchConfigs();
     } catch (err: any) {
       setStatusMsg(`Error: ${err.message || 'Execution failed'}`);

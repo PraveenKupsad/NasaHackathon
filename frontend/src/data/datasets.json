@@ -1,0 +1,80 @@
+[
+  {
+    "id": "ds-lola-gdr-dem",
+    "name": "LRO LOLA Polar Gridded Digital Elevation Model (GDR)",
+    "source": "NASA Lunar Reconnaissance Orbiter / LOLA Science Team / PDS Geosciences Node",
+    "data_type": "Altimetric Raster DEM (Topography)",
+    "crs": "IAU Moon 2000 / Lunar Polar Stereographic (EPSG:75400, Center: 90°S, 0°E)",
+    "resolution": "20 meters/pixel (interpolated to 5m in critical landing zones)",
+    "acquisition_info": "Multi-year laser altimeter profiling from 50km circular polar orbit (2009-2023). Over 6.5 billion individual laser altimetry points.",
+    "status": "REAL",
+    "url": "https://pds-geosciences.wustl.edu/missions/lro/lola.htm",
+    "citation": "Smith, D. E., et al. (2010), Initial observations from the Lunar Orbiter Laser Altimeter (LOLA) on the Lunar Reconnaissance Orbiter. GRL 37, L18204.",
+    "notes": "Used as the baseline geodetic and topographical reference for all South Pole elevation and macro-slope calculations."
+  },
+  {
+    "id": "ds-lroc-wac-illum",
+    "name": "LROC WAC Lunar South Pole Illumination Mosaic",
+    "source": "NASA Lunar Reconnaissance Orbiter Camera (LROC) / Arizona State University",
+    "data_type": "Optical Visible Albedo & Multi-Temporal Illumination Fractions",
+    "crs": "Lunar Polar Stereographic (Sphere R=1737.4 km, Lat_0=-90, Lon_0=0)",
+    "resolution": "100 meters/pixel",
+    "acquisition_info": "Synthesized from 6-month continuous coverage during southern summer (October 2009 to February 2010, ~1200 orbits).",
+    "status": "REAL",
+    "url": "https://www.lroc.asu.edu/featured_sites/view_site/46",
+    "citation": "Speyerer, E. J., & Robinson, M. S. (2013). Persistently illuminated regions at the lunar poles: Ideal sites for future exploration. Icarus, 222(1), 122-136.",
+    "notes": "Provides empirical benchmark percentages for cumulative solar visibility at candidate landing sites."
+  },
+  {
+    "id": "ds-lroc-nac-ortho",
+    "name": "LROC NAC Controlled Polar Orthomosaics",
+    "source": "NASA / Arizona State University / USGS Astrogeology Science Center",
+    "data_type": "Panchromatic High-Resolution Optical Imagery",
+    "crs": "Lunar Polar Stereographic (IAU Moon 2000)",
+    "resolution": "0.5 to 1.0 meters/pixel",
+    "acquisition_info": "Narrow Angle Camera targeted stereo pairs and repeated low-sun lighting tracks across candidate Artemis zones.",
+    "status": "REAL",
+    "url": "https://trek.nasa.gov/moon/",
+    "citation": "Robinson, M. S., et al. (2010). Lunar Reconnaissance Orbiter Camera (LROC) Instrument Overview. Space Science Reviews, 150(1-4), 81-124.",
+    "notes": "Primary imagery layer for crater identification and high-resolution visual context in the Lunar Navigator."
+  },
+  {
+    "id": "ds-diviner-psr",
+    "name": "Diviner Lunar Radiometer Polar Temperature & Volatiles Stability Model",
+    "source": "NASA LRO Diviner / UCLA / JPL",
+    "data_type": "Thermal Infrared Brightness Temperature / Modelled Ice Deposition",
+    "crs": "Lunar Polar Stereographic (EPSG:75400)",
+    "resolution": "250 meters/pixel",
+    "acquisition_info": "Continuous 9-channel thermal infrared radiometric observations spanning full lunar diurnal cycles over 14 years.",
+    "status": "REAL",
+    "url": "https://pds-geosciences.wustl.edu/lro/lro-l-dlre-4-rdr-v1/lrodlr_1001/",
+    "citation": "Paige, D. A., et al. (2010). Diviner Lunar Radiometer Observations of Cold Traps in the Moon's South Polar Region. Science, 330(6003), 479-482.",
+    "notes": "Used to cross-reference permanently shadowed regions (PSRs) where temperatures stay strictly below 110K."
+  },
+  {
+    "id": "ds-sim-micro-roughness",
+    "name": "High-Fidelity Synthetic Micro-Roughness & Boulder Field Generator",
+    "source": "LUNA NAV Scientific Synthesis Pipeline",
+    "data_type": "Synthetic Stochastic Hazard & Sub-Pixel Slopes",
+    "crs": "Local Tangent Plane / Polar Stereographic",
+    "resolution": "0.1 to 1.0 meters/pixel (synthetic grid)",
+    "acquisition_info": "Generated via fractional Brownian motion (fBm) parameterized by LOLA Hurst exponents (H=0.78) and Apollo/Surveyor rock size-frequency distributions.",
+    "status": "SIMULATED",
+    "url": "internal://lunanav/services/terrain_service.py",
+    "citation": "Demonstration scientific simulation model. Based on Shoemaker et al. (1969) power-law boulder frequency equations.",
+    "notes": "Provides high-frequency hazard and landing-gear clearance evaluations where raw 0.5m NAC stereo DEMs are computationally unavailable in hackathon environment."
+  },
+  {
+    "id": "ds-sim-ephemeris-solar",
+    "name": "SPICE-Derived South Pole Solar Azimuth & Elevation Simulator",
+    "source": "LUNA NAV Astrodynamics Model (JPL DE421 Ephemeris Approximation)",
+    "data_type": "Time-Series Solar Vector & Earth Line-of-Sight Telemetry",
+    "crs": "MCMF (Moon-Centered Moon-Fixed) / Topocentric Horizon",
+    "resolution": "1-hour time intervals over 365-day mission timeline",
+    "acquisition_info": "Calculated using lunar obliquity (1.5424° to ecliptic) and lunar precession cycle (18.6 years) for 2026-2027 mission window.",
+    "status": "SIMULATED",
+    "url": "internal://lunanav/services/illumination_service.py",
+    "citation": "Derived from NASA NAIF SPICE kernel algorithms for lunar south polar horizon shading.",
+    "notes": "Provides dynamic temporal solar availability curves for candidate sites across the simulated mission timeline."
+  }
+]

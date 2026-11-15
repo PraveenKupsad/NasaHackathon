@@ -56,7 +56,11 @@ export const ReportsPage: React.FC = () => {
   };
 
   const handleDownloadCsv = () => {
-    window.open(apiService.getCsvExportUrl(), '_blank');
+    const url = apiService.getCsvExportUrl();
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'luna_nav_site_evaluations.csv';
+    link.click();
   };
 
   if (loading || !report) {
