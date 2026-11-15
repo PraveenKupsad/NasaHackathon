@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #06090e;
+  color: #e2e8f0;
+  font-family: 'Inter', 'IBM Plex Sans', -apple-system, sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Monospace telemetry */
+.font-telemetry {
+  font-family: 'IBM Plex Mono', monospace;
+  font-feature-settings: 'tnum' 1, 'zero' 1;
+}
+
+/* Custom aerospace scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0e17;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Engineering panel borders */
+.eng-panel {
+  background-color: #0d131f;
+  border: 1px solid #1a2538;
+}
+
+.eng-panel-subtle {
+  background-color: #0a0e17;
+  border: 1px solid #162030;
+}
+
+.eng-panel-interactive {
+  background-color: #0d131f;
+  border: 1px solid #1a2538;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.eng-panel-interactive:hover {
+  border-color: #2a3c58;
+  background-color: #111a2a;
+}
+
+/* Print report styling */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    overflow: visible !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .eng-panel {
+    border: 1px solid #cbd5e1 !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    page-break-inside: avoid;
+  }
+}
